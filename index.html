@@ -1,77 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KUNXI ZHUANG | The Digital Flâneur</title>
+    <title>KUNXI | The Digital Flâneur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400&family=Roboto+Mono&display=swap');
-        
-        body { 
-            background-color: #000; 
-            color: #fff; 
-            font-family: 'Inter', sans-serif;
+        /* 引入更具硬核建筑感的无衬线字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Inter', "Helvetica Neue", Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* 隐藏滚动条但保留滚动功能 */
+        /* 隐藏滚动条但保留功能 */
         ::-webkit-scrollbar { display: none; }
 
-        .mono { font-family: 'Roboto Mono', monospace; }
-
-        /* 顶部大字体的描边效果 */
-        .outline-text {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-            color: transparent;
-            transition: all 0.5s;
+        /* 核心大标题样式 */
+        .giant-title {
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            font-weight: 900;
         }
-        .outline-text:hover {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
+
+        /* 你的名字：最顶层，固定不动 */
+        .sticky-name {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: white;
+            padding-top: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        /* 漫游者标题：中层，随页面滚动 */
+        .scrolling-subtitle {
+            position: relative;
+            z-index: 50;
+            padding-bottom: 5vh;
+        }
+
+        /* 内容遮罩层：高层级，背景为白，上滑时遮掉下方的字 */
+        .content-mask-layer {
+            position: relative;
+            z-index: 80; /* 高于 subtitle，低于 name */
+            background-color: white;
+            min-height: 100vh;
+            border-top: 1px solid #000;
+        }
+
+        /* 响应式调整大字号 */
+        @media (min-width: 768px) {
+            .text-kunxi { font-size: 25vw; }
+            .text-flaneur { font-size: 15vw; }
+        }
+        @media (max-width: 767px) {
+            .text-kunxi { font-size: 28vw; }
+            .text-flaneur { font-size: 18vw; }
         }
     </style>
 </head>
 <body>
 
-    <header class="fixed top-0 left-0 w-full z-50 p-4 md:p-8 bg-gradient-to-b from-black to-transparent">
-        <h1 class="text-[12vw] leading-none font-black tracking-tighter uppercase outline-text select-none">
-            Digital Flâneur
-        </h1>
+    <header class="px-4 md:px-8">
+        <div class="sticky-name">
+            <h1 class="giant-title text-kunxi">KUNXI</h1>
+        </div>
+
+        <div class="scrolling-subtitle mt-4">
+            <h2 class="giant-title text-flaneur text-zinc-900">
+                The Digital<br>Flâneur
+            </h2>
+        </div>
     </header>
 
-    <footer class="fixed bottom-0 left-0 w-full z-50 p-6 md:p-10 flex justify-between items-end bg-gradient-to-t from-black to-transparent">
-        <div class="flex flex-col md:flex-row gap-6 md:gap-20 mono text-[10px] tracking-[0.3em] uppercase opacity-60">
-            <a href="#spatial" class="hover:text-white transition-colors">01. Spatial Logic</a>
-            <a href="#visual" class="hover:text-white transition-colors">02. Visual Drift</a>
-            <a href="#lab" class="hover:text-white transition-colors">03. Intervention Lab</a>
-        </div>
-        <div class="hidden md:block mono text-[9px] opacity-30 tracking-widest uppercase">
-            © 2026 KUNXI ZHUANG / coldzest_
-        </div>
-    </footer>
-
-    <main class="relative z-10">
+    <main class="content-mask-layer px-4 md:px-8">
         
-        <section class="h-screen flex flex-col justify-center items-center px-6">
-            <div class="w-full max-w-lg aspect-[3/4] bg-zinc-900 overflow-hidden relative group">
-                <div class="absolute inset-0 flex items-center justify-center text-zinc-700 mono text-xs">
-                    [ Your Image Here ]
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20">
+            <div class="w-full aspect-[3/4] bg-zinc-100 flex items-center justify-center group overflow-hidden border border-zinc-200">
+                <span class="text-zinc-300 italic mono text-sm group-hover:scale-110 transition-transform duration-700">
+                    [ Placeholder: Kunxi's Portrait ]
+                </span>
+            </div>
+
+            <div class="flex flex-col justify-end space-y-8 pb-10">
+                <div class="space-y-4">
+                    <p class="text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
+                        Architectural Logic.<br>
+                        Digital Drifting.<br>
+                        Future Interaction.
+                    </p>
+                    <p class="text-lg text-zinc-500 max-w-md font-medium">
+                        从建筑学背景出发，在数字漫游中记录城市，并试图通过 HCI 探索物理空间与数字界面的缝隙。
+                    </p>
                 </div>
-                <div class="absolute bottom-8 left-8">
-                    <h2 class="text-4xl font-light tracking-widest uppercase">Kunxi Zhuang</h2>
-                    <p class="text-xs mono mt-4 opacity-50 tracking-widest">Architect / Digital Observer / HCI Researcher</p>
+                
+                <div class="pt-8 border-t border-black flex justify-between items-end">
+                    <div class="text-[10px] tracking-widest uppercase font-black">
+                        Edinburgh / Fuzhou / Tokyo
+                    </div>
+                    <div class="text-[10px] tracking-widest uppercase font-black opacity-30">
+                        Based in China
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="spatial" class="h-screen flex items-center justify-center border-t border-zinc-900">
-            <p class="mono text-zinc-800 text-[15vw] select-none uppercase font-black">Spatial</p>
-        </section>
+        <nav class="mt-40 grid grid-cols-1 md:grid-cols-3 border-y border-black">
+            <a href="#spatial" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all duration-300">
+                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">01 / Spatial Logic</span>
+                <span class="text-2xl font-black uppercase">建筑与商业逻辑</span>
+            </a>
+            <a href="#visual" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all duration-300">
+                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">02 / Visual Drift</span>
+                <span class="text-2xl font-black uppercase">城市视觉感官</span>
+            </a>
+            <a href="#lab" class="group p-8 hover:bg-black hover:text-white transition-all duration-300">
+                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">03 / Intervention Lab</span>
+                <span class="text-2xl font-black uppercase">交互实验室</span>
+            </a>
+        </nav>
 
-        <section id="visual" class="h-screen flex items-center justify-center border-t border-zinc-900">
-            <p class="mono text-zinc-800 text-[15vw] select-none uppercase font-black">Drift</p>
-        </section>
-
+        <footer class="py-20 text-center">
+            <p class="text-[10px] tracking-[0.6em] opacity-20 uppercase font-black">
+                The city is an interface. Walking is the interaction.
+            </p>
+        </footer>
     </main>
 
 </body>
