@@ -6,53 +6,73 @@
     <title>KUNXI ZHUANG | The Digital Flâneur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Roboto+Mono&display=swap');
-        body { font-family: 'Inter', sans-serif; cursor: crosshair; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400&family=Roboto+Mono&display=swap');
+        
+        body { 
+            background-color: #000; 
+            color: #fff; 
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar { display: none; }
+
         .mono { font-family: 'Roboto Mono', monospace; }
-        .column-hover:hover { flex-grow: 1.5; }
+
+        /* 顶部大字体的描边效果 */
+        .outline-text {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            color: transparent;
+            transition: all 0.5s;
+        }
+        .outline-text:hover {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
+        }
     </style>
 </head>
-<body class="bg-black text-zinc-100 overflow-hidden">
+<body>
 
-    <header class="fixed top-0 w-full p-8 z-50 flex justify-between items-baseline mix-blend-difference">
-        <h1 class="text-xl tracking-[0.3em] font-light">KUNXI ZHUANG</h1>
-        <nav class="space-x-8 text-[10px] tracking-widest mono uppercase opacity-60 hover:opacity-100 transition-opacity">
-            <a href="#">About</a>
-            <a href="#">Writing</a>
-        </nav>
+    <header class="fixed top-0 left-0 w-full z-50 p-4 md:p-8 bg-gradient-to-b from-black to-transparent">
+        <h1 class="text-[12vw] leading-none font-black tracking-tighter uppercase outline-text select-none">
+            Digital Flâneur
+        </h1>
     </header>
 
-    <main class="flex h-screen w-full transition-all duration-700 ease-in-out">
+    <footer class="fixed bottom-0 left-0 w-full z-50 p-6 md:p-10 flex justify-between items-end bg-gradient-to-t from-black to-transparent">
+        <div class="flex flex-col md:flex-row gap-6 md:gap-20 mono text-[10px] tracking-[0.3em] uppercase opacity-60">
+            <a href="#spatial" class="hover:text-white transition-colors">01. Spatial Logic</a>
+            <a href="#visual" class="hover:text-white transition-colors">02. Visual Drift</a>
+            <a href="#lab" class="hover:text-white transition-colors">03. Intervention Lab</a>
+        </div>
+        <div class="hidden md:block mono text-[9px] opacity-30 tracking-widest uppercase">
+            © 2026 KUNXI ZHUANG / coldzest_
+        </div>
+    </footer>
+
+    <main class="relative z-10">
         
-        <section class="column-hover flex-1 border-r border-zinc-900 flex flex-col justify-center items-center transition-all duration-500 group relative overflow-hidden">
-            <div class="z-10 text-center">
-                <h2 class="text-sm tracking-[0.4em] mono text-zinc-500 group-hover:text-white transition-colors">01. SPATIAL LOGIC</h2>
-                <p class="text-[10px] mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 tracking-widest text-zinc-400">Architecture & Urban Systems</p>
+        <section class="h-screen flex flex-col justify-center items-center px-6">
+            <div class="w-full max-w-lg aspect-[3/4] bg-zinc-900 overflow-hidden relative group">
+                <div class="absolute inset-0 flex items-center justify-center text-zinc-700 mono text-xs">
+                    [ Your Image Here ]
+                </div>
+                <div class="absolute bottom-8 left-8">
+                    <h2 class="text-4xl font-light tracking-widest uppercase">Kunxi Zhuang</h2>
+                    <p class="text-xs mono mt-4 opacity-50 tracking-widest">Architect / Digital Observer / HCI Researcher</p>
+                </div>
             </div>
-            <div class="absolute inset-0 bg-zinc-800 opacity-0 group-hover:opacity-10 transition-opacity duration-1000"></div>
         </section>
 
-        <section class="column-hover flex-1 border-r border-zinc-900 flex flex-col justify-center items-center transition-all duration-500 group relative overflow-hidden">
-            <div class="z-10 text-center">
-                <h2 class="text-sm tracking-[0.4em] mono text-zinc-500 group-hover:text-white transition-colors">02. VISUAL DRIFT</h2>
-                <p class="text-[10px] mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 tracking-widest text-zinc-400">Captured by coldzest_</p>
-            </div>
-            <div class="absolute inset-0 bg-zinc-800 opacity-0 group-hover:opacity-10 transition-opacity duration-1000"></div>
+        <section id="spatial" class="h-screen flex items-center justify-center border-t border-zinc-900">
+            <p class="mono text-zinc-800 text-[15vw] select-none uppercase font-black">Spatial</p>
         </section>
 
-        <section class="column-hover flex-1 flex flex-col justify-center items-center transition-all duration-500 group relative overflow-hidden">
-            <div class="z-10 text-center">
-                <h2 class="text-sm tracking-[0.4em] mono text-zinc-500 group-hover:text-white transition-colors">03. INTERVENTION LAB</h2>
-                <p class="text-[10px] mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700 tracking-widest text-zinc-400">HCI & Future Experiences</p>
-            </div>
-            <div class="absolute inset-0 bg-zinc-800 opacity-0 group-hover:opacity-10 transition-opacity duration-1000"></div>
+        <section id="visual" class="h-screen flex items-center justify-center border-t border-zinc-900">
+            <p class="mono text-zinc-800 text-[15vw] select-none uppercase font-black">Drift</p>
         </section>
 
     </main>
-
-    <footer class="fixed bottom-0 w-full p-8 z-50">
-        <p class="text-[9px] tracking-[0.5em] text-zinc-600 uppercase">The city is an interface. Walking is the interaction.</p>
-    </div>
 
 </body>
 </html>
