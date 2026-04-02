@@ -17,23 +17,13 @@
 
         ::-webkit-scrollbar { display: none; }
 
-        /* 顶部导航支架：高度固定，确保 KUNXI 和 FLÂNEUR 视觉同行 */
-        .nav-bracket {
-            position: relative;
-            height: 12vw;
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        /* KUNXI: 顶层固定 */
+        /* Header 保持之前的逻辑：KUNXI 固定，FLÂNEUR 随动 */
         .sticky-kunxi {
             position: fixed;
             top: 2rem;
             left: 2rem;
             z-index: 100;
-            background: white; /* 关键：白色背景遮挡下方滚动上来的字 */
+            background: white;
             padding-right: 20px;
         }
 
@@ -45,7 +35,6 @@
             font-weight: 900;
         }
 
-        /* FLÂNEUR: 随页面滚动，但初始位置与 KUNXI 同行 */
         .title-flaneur {
             font-size: 8vw;
             line-height: 0.8;
@@ -56,16 +45,77 @@
             position: absolute;
             right: 2rem;
             top: 2rem;
-            z-index: 10; /* 低于 KUNXI 和内容遮罩层 */
+            z-index: 10;
         }
 
-        /* 内容层：自带白色背景，向上滚动时遮掉后面的 FLÂNEUR */
+        /* 地图画布容器 */
+        .map-section {
+            position: relative;
+            z-index: 40;
+            width: 100%;
+            height: 70vh; /* 占据大半个屏幕 */
+            margin-top: 12vw;
+            background: #fafafa;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 坐标点样式 */
+        .coord-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .coord-point:hover {
+            transform: scale(2);
+        }
+
+        /* 呼吸环 */
+        .coord-point::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            border: 1px solid #000;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        /* 浮动标签 */
+        .coord-label {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .coord-point:hover .coord-label {
+            opacity: 1;
+        }
+
         .content-layer {
             position: relative;
-            z-index: 50; 
+            z-index: 50;
             background: white;
-            padding: 2rem;
-            margin-top: 2vw; /* 留出一点呼吸感 */
+            padding: 4rem 2rem;
         }
 
         .manifesto-text {
@@ -97,40 +147,55 @@
 
         @media (max-width: 768px) {
             .title-kunxi, .title-flaneur { font-size: 14vw; }
-            .nav-bracket { height: 18vw; padding: 1.5rem; }
-            .sticky-kunxi { top: 1.5rem; left: 1.5rem; }
-            .title-flaneur { top: 1.5rem; right: 1.5rem; }
-            .content-layer { padding: 1.5rem; }
+            .map-section { height: 50vh; margin-top: 20vw; }
         }
     </style>
 </head>
 <body>
 
-    <div class="nav-bracket">
-        <div class="sticky-kunxi">
-            <h1 class="title-kunxi">KUNXI</h1>
-        </div>
-        <h2 class="title-flaneur">FL&acirc;NEUR</h2>
+    <div class="sticky-kunxi">
+        <h1 class="title-kunxi">KUNXI</h1>
     </div>
+    <h2 class="title-flaneur">FL&acirc;NEUR</h2>
+
+    <section class="map-section">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/World_map_blank_without_borders.svg" 
+             class="absolute w-[90%] opacity-[0.03] grayscale pointer-events-none" alt="Base Map">
+        
+        <div class="coord-point" style="top: 30%; left: 47.5%;">
+            <div class="coord-label">Edinburgh</div>
+        </div>
+
+        <div class="coord-point" style="top: 52%; left: 63%;">
+            <div class="coord-label">Dubai / Abu Dhabi</div>
+        </div>
+
+        <div class="coord-point" style="top: 66%; left: 80%;">
+            <div class="coord-label">Singapore</div>
+        </div>
+
+        <div class="coord-point" style="top: 48%; left: 82%;">
+            <div class="coord-label">Shanghai / Chongqing</div>
+        </div>
+    </section>
 
     <main class="content-layer">
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-16 pt-10">
-            <div class="w-full aspect-[3/4] bg-zinc-50 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-1000">
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div class="w-full aspect-[3/4] bg-zinc-50 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-1000 overflow-hidden">
                 <span class="text-zinc-200 italic text-[10px] tracking-widest uppercase">Visual Entry</span>
             </div>
 
             <div class="flex flex-col justify-end pb-12">
-                <div class="mb-12">
+                <div class="mb-12 text-zinc-900">
                     <p class="manifesto-text">
                         To wander is not to be lost, but to observe the city as a living interface. 
                         As an architect, I transition from the heavy logic of masonry to the fluid drifting of digital interaction. 
                         For me, buildings are static nodes, while walking is the ultimate user experience. 
-                        I seek the invisible boundaries where physical structures meet human-computer narratives.
                     </p>
                 </div>
                 
                 <div class="pt-8 flex justify-between mono text-[10px] tracking-widest uppercase font-bold opacity-20">
-                    <span>Edinburgh / Xiamen / Shanghai</span>
+                    <span>UK / UAE / SG / CN</span>
                     <span>32.06 N, 118.79 E</span>
                 </div>
             </div>
@@ -160,7 +225,7 @@
         </nav>
 
         <footer class="mt-64 mb-10 text-center">
-            <p class="text-[8px] tracking-[1.2em] opacity-10 uppercase font-black">
+            <p class="text-[8px] tracking-[1.2em] opacity-20 uppercase font-black">
                 Ways of seeing a city.
             </p>
         </footer>
