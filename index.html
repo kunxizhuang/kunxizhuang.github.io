@@ -1,133 +1,123 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KUNXI | The Digital Flâneur</title>
+    <title>KUNXI | FLÂNEUR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 引入更具硬核建筑感的无衬线字体 */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
 
         body {
             background-color: #ffffff;
-            color: #000000;
+            color: #000;
             font-family: 'Inter', "Helvetica Neue", Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
-        /* 隐藏滚动条但保留功能 */
         ::-webkit-scrollbar { display: none; }
 
-        /* 核心大标题样式 */
-        .giant-title {
+        /* 顶部固定容器 */
+        .header-frame {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem;
+            border-bottom: 1px solid #000;
+        }
+
+        .title-main {
+            font-size: 8vw; /* 缩小后的比例，占据左上角 */
             line-height: 0.8;
             letter-spacing: -0.05em;
             text-transform: uppercase;
             font-weight: 900;
         }
 
-        /* 你的名字：最顶层，固定不动 */
-        .sticky-name {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: white;
-            padding-top: 2rem;
-            padding-bottom: 1rem;
+        .title-sub {
+            font-size: 8vw;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            font-weight: 900;
+            text-align: right;
         }
 
-        /* 漫游者标题：中层，随页面滚动 */
-        .scrolling-subtitle {
+        /* 遮罩层：随滚动上升覆盖 Flâneur */
+        .content-layer {
+            position: relative;
+            z-index: 80;
+            background: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* 漫游者文字：放在 Header 下方，随页面滚动被遮挡 */
+        .flaneur-wrap {
             position: relative;
             z-index: 50;
-            padding-bottom: 5vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: flex-end;
         }
 
-        /* 内容遮罩层：高层级，背景为白，上滑时遮掉下方的字 */
-        .content-mask-layer {
-            position: relative;
-            z-index: 80; /* 高于 subtitle，低于 name */
-            background-color: white;
-            min-height: 100vh;
-            border-top: 1px solid #000;
-        }
-
-        /* 响应式调整大字号 */
-        @media (min-width: 768px) {
-            .text-kunxi { font-size: 25vw; }
-            .text-flaneur { font-size: 15vw; }
-        }
-        @media (max-width: 767px) {
-            .text-kunxi { font-size: 28vw; }
-            .text-flaneur { font-size: 18vw; }
+        @media (max-width: 768px) {
+            .title-main, .title-sub { font-size: 12vw; }
+            .header-frame, .flaneur-wrap { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <header class="px-4 md:px-8">
-        <div class="sticky-name">
-            <h1 class="giant-title text-kunxi">KUNXI</h1>
-        </div>
-
-        <div class="scrolling-subtitle mt-4">
-            <h2 class="giant-title text-flaneur text-zinc-900">
-                The Digital<br>Flâneur
-            </h2>
-        </div>
+    <header class="header-frame">
+        <h1 class="title-main">KUNXI</h1>
+        <div class="text-[10px] mono tracking-widest uppercase opacity-40">Architect / Observer</div>
     </header>
 
-    <main class="content-mask-layer px-4 md:px-8">
+    <div class="flaneur-wrap">
+        <h2 class="title-sub">FL&acirc;NEUR</h2>
+    </div>
+
+    <main class="content-layer">
         
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20">
-            <div class="w-full aspect-[3/4] bg-zinc-100 flex items-center justify-center group overflow-hidden border border-zinc-200">
-                <span class="text-zinc-300 italic mono text-sm group-hover:scale-110 transition-transform duration-700">
-                    [ Placeholder: Kunxi's Portrait ]
-                </span>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-16 pt-10">
+            <div class="w-full aspect-[3/4] bg-zinc-100 flex items-center justify-center grayscale">
+                <span class="text-zinc-400 italic text-sm">[ IMAGE_PLACEHOLDER ]</span>
             </div>
 
-            <div class="flex flex-col justify-end space-y-8 pb-10">
-                <div class="space-y-4">
-                    <p class="text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
-                        Architectural Logic.<br>
-                        Digital Drifting.<br>
-                        Future Interaction.
-                    </p>
-                    <p class="text-lg text-zinc-500 max-w-md font-medium">
-                        从建筑学背景出发，在数字漫游中记录城市，并试图通过 HCI 探索物理空间与数字界面的缝隙。
-                    </p>
-                </div>
-                
-                <div class="pt-8 border-t border-black flex justify-between items-end">
-                    <div class="text-[10px] tracking-widest uppercase font-black">
-                        Edinburgh / Fuzhou / Tokyo
-                    </div>
-                    <div class="text-[10px] tracking-widest uppercase font-black opacity-30">
-                        Based in China
-                    </div>
+            <div class="flex flex-col justify-end pb-12">
+                <p class="text-3xl md:text-5xl font-black leading-none tracking-tighter uppercase mb-8">
+                    Architectural Logic.<br>
+                    Spatial Interaction.
+                </p>
+                <div class="pt-6 border-t border-black flex justify-between mono text-[10px] tracking-widest uppercase font-bold">
+                    <span>Edinburgh / Tokyo</span>
+                    <span class="opacity-30">Based in China</span>
                 </div>
             </div>
         </section>
 
-        <nav class="mt-40 grid grid-cols-1 md:grid-cols-3 border-y border-black">
-            <a href="#spatial" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all duration-300">
-                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">01 / Spatial Logic</span>
-                <span class="text-2xl font-black uppercase">建筑与商业逻辑</span>
+        <nav class="mt-32 grid grid-cols-1 md:grid-cols-3 border-t border-black">
+            <a href="#spatial" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all">
+                <span class="block text-[10px] mb-6 opacity-40 uppercase tracking-widest">01</span>
+                <span class="text-2xl font-black uppercase tracking-tight">Spatial Logic</span>
             </a>
-            <a href="#visual" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all duration-300">
-                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">02 / Visual Drift</span>
-                <span class="text-2xl font-black uppercase">城市视觉感官</span>
+            <a href="#visual" class="group p-8 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-all">
+                <span class="block text-[10px] mb-6 opacity-40 uppercase tracking-widest">02</span>
+                <span class="text-2xl font-black uppercase tracking-tight">Visual Drift</span>
             </a>
-            <a href="#lab" class="group p-8 hover:bg-black hover:text-white transition-all duration-300">
-                <span class="block text-[10px] mb-4 opacity-50 group-hover:opacity-100 transition-opacity uppercase">03 / Intervention Lab</span>
-                <span class="text-2xl font-black uppercase">交互实验室</span>
+            <a href="#lab" class="group p-8 hover:bg-black hover:text-white transition-all">
+                <span class="block text-[10px] mb-6 opacity-40 uppercase tracking-widest">03</span>
+                <span class="text-2xl font-black uppercase tracking-tight">Intervention Lab</span>
             </a>
         </nav>
 
-        <footer class="py-20 text-center">
-            <p class="text-[10px] tracking-[0.6em] opacity-20 uppercase font-black">
+        <footer class="mt-40 mb-10 text-center">
+            <p class="text-[9px] tracking-[0.6em] opacity-20 uppercase font-black">
                 The city is an interface. Walking is the interaction.
             </p>
         </footer>
