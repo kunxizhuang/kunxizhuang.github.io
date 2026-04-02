@@ -17,15 +17,24 @@
 
         ::-webkit-scrollbar { display: none; }
 
-        /* 仅 KUNXI 固定在顶 */
-        .header-sticky {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: white;
+        /* 顶部导航支架：高度固定，确保 KUNXI 和 FLÂNEUR 视觉同行 */
+        .nav-bracket {
+            position: relative;
+            height: 12vw;
             padding: 2rem;
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        /* KUNXI: 顶层固定 */
+        .sticky-kunxi {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+            background: white; /* 关键：白色背景遮挡下方滚动上来的字 */
+            padding-right: 20px;
         }
 
         .title-kunxi {
@@ -36,26 +45,27 @@
             font-weight: 900;
         }
 
-        /* FLÂNEUR 放在滚动流中 */
-        .title-flaneur-wrap {
-            padding: 0 2rem 2rem 2rem;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: -1rem; /* 稍微向上提，使其与 KUNXI 视觉平衡 */
-        }
-
+        /* FLÂNEUR: 随页面滚动，但初始位置与 KUNXI 同行 */
         .title-flaneur {
             font-size: 8vw;
             line-height: 0.8;
             letter-spacing: -0.02em;
             text-transform: uppercase;
             font-weight: 300;
+            text-align: right;
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            z-index: 10; /* 低于 KUNXI 和内容遮罩层 */
         }
 
+        /* 内容层：自带白色背景，向上滚动时遮掉后面的 FLÂNEUR */
         .content-layer {
             position: relative;
-            z-index: 50;
+            z-index: 50; 
+            background: white;
             padding: 2rem;
+            margin-top: 2vw; /* 留出一点呼吸感 */
         }
 
         .manifesto-text {
@@ -72,10 +82,8 @@
             letter-spacing: 0.05em;
             margin-top: 0.5rem;
             font-weight: 400;
-            text-transform: none;
         }
 
-        /* 模块交互：变色且放大 */
         .module-link {
             display: inline-block;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -83,24 +91,25 @@
         }
         
         .module-link:hover {
-            transform: scale(1.1); /* 鼠标移上去变大 */
+            transform: scale(1.1);
             color: #666;
         }
 
         @media (max-width: 768px) {
             .title-kunxi, .title-flaneur { font-size: 14vw; }
-            .header-sticky, .content-layer { padding: 1.5rem; }
-            .manifesto-text { font-size: 1.1rem; }
+            .nav-bracket { height: 18vw; padding: 1.5rem; }
+            .sticky-kunxi { top: 1.5rem; left: 1.5rem; }
+            .title-flaneur { top: 1.5rem; right: 1.5rem; }
+            .content-layer { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header-sticky">
-        <h1 class="title-kunxi">KUNXI</h1>
-    </header>
-
-    <div class="title-flaneur-wrap">
+    <div class="nav-bracket">
+        <div class="sticky-kunxi">
+            <h1 class="title-kunxi">KUNXI</h1>
+        </div>
         <h2 class="title-flaneur">FL&acirc;NEUR</h2>
     </div>
 
@@ -121,7 +130,7 @@
                 </div>
                 
                 <div class="pt-8 flex justify-between mono text-[10px] tracking-widest uppercase font-bold opacity-20">
-                    <span>Edinburgh / Tokyo / Fuzhou</span>
+                    <span>Edinburgh / Xiamen / Shanghai</span>
                     <span>32.06 N, 118.79 E</span>
                 </div>
             </div>
