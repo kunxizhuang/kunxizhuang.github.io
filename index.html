@@ -17,16 +17,15 @@
 
         ::-webkit-scrollbar { display: none; }
 
-        /* 顶部固定容器 */
-        .header-frame {
+        /* 仅 KUNXI 固定在顶 */
+        .header-sticky {
             position: sticky;
             top: 0;
             z-index: 100;
             background: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
             padding: 2rem;
+            display: flex;
+            justify-content: flex-start;
         }
 
         .title-kunxi {
@@ -37,13 +36,20 @@
             font-weight: 900;
         }
 
+        /* FLÂNEUR 放在滚动流中 */
+        .title-flaneur-wrap {
+            padding: 0 2rem 2rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -1rem; /* 稍微向上提，使其与 KUNXI 视觉平衡 */
+        }
+
         .title-flaneur {
             font-size: 8vw;
             line-height: 0.8;
             letter-spacing: -0.02em;
             text-transform: uppercase;
             font-weight: 300;
-            text-align: right;
         }
 
         .content-layer {
@@ -57,32 +63,46 @@
             line-height: 1.6;
             letter-spacing: -0.02em;
             font-weight: 400;
-            color: #000;
             max-width: 90%;
         }
 
-        /* 模块样式：去掉所有边框和修饰 */
+        .gray-sub {
+            color: #999;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            text-transform: none;
+        }
+
+        /* 模块交互：变色且放大 */
         .module-link {
-            transition: all 0.5s ease;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: left center;
         }
         
         .module-link:hover {
-            color: #999;
+            transform: scale(1.1); /* 鼠标移上去变大 */
+            color: #666;
         }
 
         @media (max-width: 768px) {
-            .title-kunxi, .title-flaneur { font-size: 12vw; }
-            .header-frame { padding: 1rem; }
+            .title-kunxi, .title-flaneur { font-size: 14vw; }
+            .header-sticky, .content-layer { padding: 1.5rem; }
             .manifesto-text { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header-frame">
+    <header class="header-sticky">
         <h1 class="title-kunxi">KUNXI</h1>
-        <h2 class="title-flaneur">FL&acirc;NEUR</h2>
     </header>
+
+    <div class="title-flaneur-wrap">
+        <h2 class="title-flaneur">FL&acirc;NEUR</h2>
+    </div>
 
     <main class="content-layer">
         <section class="grid grid-cols-1 md:grid-cols-2 gap-16 pt-10">
@@ -101,27 +121,38 @@
                 </div>
                 
                 <div class="pt-8 flex justify-between mono text-[10px] tracking-widest uppercase font-bold opacity-20">
-                    <span>Edinburgh / Tokyo / Fuzhou</span>
+                    <span>Edinburgh / Xiamen / Fuzhou</span>
                     <span>32.06 N, 118.79 E</span>
                 </div>
             </div>
         </section>
 
-        <nav class="mt-64 grid grid-cols-1 md:grid-cols-3 gap-12 uppercase">
-            <a href="#spatial" class="module-link py-4">
-                <span class="text-2xl font-black tracking-tight">Spatial Logic</span>
-            </a>
-            <a href="#visual" class="module-link py-4">
-                <span class="text-2xl font-black tracking-tight">Visual Drift</span>
-            </a>
-            <a href="#lab" class="module-link py-4">
-                <span class="text-2xl font-black tracking-tight">Intervention Lab</span>
-            </a>
+        <nav class="mt-64 grid grid-cols-1 md:grid-cols-3 gap-16 uppercase">
+            <div class="flex flex-col items-start">
+                <a href="#spatial" class="module-link">
+                    <span class="text-3xl font-black tracking-tight">Spatial Logic</span>
+                </a>
+                <p class="gray-sub">“Buildings are static, logic is fluid.”</p>
+            </div>
+
+            <div class="flex flex-col items-start">
+                <a href="#visual" class="module-link">
+                    <span class="text-3xl font-black tracking-tight">Visual Drift</span>
+                </a>
+                <p class="gray-sub">“The city is an interface. Walking is the interaction.”</p>
+            </div>
+
+            <div class="flex flex-col items-start">
+                <a href="#lab" class="module-link">
+                    <span class="text-3xl font-black tracking-tight">Intervention Lab</span>
+                </a>
+                <p class="gray-sub">“Prototyping the invisible boundaries.”</p>
+            </div>
         </nav>
 
         <footer class="mt-64 mb-10 text-center">
             <p class="text-[8px] tracking-[1.2em] opacity-10 uppercase font-black">
-                The architecture of information.
+                Walking through cities.
             </p>
         </footer>
     </main>
