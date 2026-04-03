@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SPATIAL LOGIC | KUNXI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap');
+        body { background-color: #fff; color: #000; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; margin: 0; overflow-x: hidden; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* --- 1. 固定框架 (严格对齐首页) --- */
+        .ui-frame-fixed { position: fixed; inset: 0; pointer-events: none; z-index: 100; padding: 2rem; }
+        .name-box { position: absolute; top: 2rem; left: 2rem; pointer-events: auto; }
+        .title-kunxi { font-size: 5vw; line-height: 0.8; letter-spacing: -0.05em; font-weight: 900; text-transform: uppercase; }
+        .footer-box { position: absolute; bottom: 2rem; left: 0; width: 100%; text-align: center; }
+        .footer-text { font-size: 7px; letter-spacing: 1.5em; opacity: 0.2; text-transform: uppercase; font-weight: 900; }
+
+        /* --- 2. 随动副标题 (FLÂNEUR) --- */
+        .header-drift { padding: 2rem; display: flex; justify-content: flex-end; position: relative; z-index: 10; }
+        .title-flaneur { font-size: 5vw; line-height: 0.8; letter-spacing: -0.02em; font-weight: 300; text-transform: uppercase; }
+
+        /* --- 3. 内容区 (BIG 风格：大间距、模块化) --- */
+        .main-content { position: relative; z-index: 50; background: white; }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* BIG 常用的大比例双列布局 */
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .project-card {
+            position: relative;
+            background: #fcfcfc;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            border: 1px solid #eee;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* BIG 风格：悬停时显示逻辑图解或变色 */
+        .project-card:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .project-card img {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%; /* 留白感，突出物体本身 */
+            transition: 0.6s;
+            mix-blend-mode: multiply; /* 适合白底图解 */
+        }
+
+        .project-card:hover img {
+            transform: translate(-50%, -60%) scale(1.1);
+            filter: invert(1);
+        }
+
+        .project-meta {
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-title { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; line-height: 1; }
+        .project-tag { font-size: 10px; margin-top: 0.5rem; opacity: 0.4; tracking: 0.2em; text-transform: uppercase; }
+
+        /* 底部导航同步 */
+        .content-container { padding: 0 2rem; max-width: 1400px; margin: 0 auto; }
+        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .module-link { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; }
+
+        @media (max-width: 768px) {
+            .project-grid { grid-template-columns: 1fr; }
+            .title-kunxi, .title-flaneur { font-size: 10vw; }
+            .nav-grid { grid-template-columns: 1fr; gap: 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-frame-fixed">
+        <div class="name-box"><a href="index.html"><h1 class="title-kunxi">KUNXI</h1></a></div>
+        <div class="footer-box"><p class="footer-text">Ways of seeing a city.</p></div>
+    </div>
+
+    <header class="header-drift"><h2 class="title-flaneur">FL&acirc;NEUR</h2></header>
+
+    <main class="main-content">
+        
+        <section class="project-grid">
+            
+            <div class="project-card">
+                <div class="project-meta">
+                    <h3 class="project-title">Libya Meeting Center</h3>
+                    <p class="project-tag">Renovation / Volumetric Shift</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-[10px] text-zinc-200 uppercase font-black">Diagram_01</div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-meta">
+                    <h3 class="project-title">Jiangxi Factory</h3>
+                    <p class="project-tag">Industrial / Logic Flow</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-[10px] text-zinc-200 uppercase font-black">Diagram_02</div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-meta">
+                    <h3 class="project-title">Xianhou Village</h3>
+                    <p class="project-tag">Urban Intervention / HCI</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-[10px] text-zinc-200 uppercase font-black">Diagram_03</div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-meta">
+                    <h3 class="project-title">24 Solar Terms</h3>
+                    <p class="project-tag">Visual Logic / Narrative</p>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-[10px] text-zinc-200 uppercase font-black">Diagram_04</div>
+            </div>
+
+        </section>
+
+        <nav class="content-container mt-40 pb-40 nav-grid">
+            <div class="group flex flex-col items-start">
+                <a href="spatial.html" class="border-b-2 border-black module-link inline-block">Spatial Logic</a>
+                <p class="text-zinc-500 text-[9px] mt-2 italic">Buildings are static, logic is fluid.</p>
+            </div>
+            <div class="group flex flex-col items-start">
+                <a href="visual-drift.html" class="module-link inline-block transition-transform duration-700 group-hover:translate-x-2">Visual Drift</a>
+                <p class="text-zinc-500 text-[9px] mt-2 italic">The city is an interface. Walking is the interaction.</p>
+            </div>
+            <div class="group flex flex-col items-start">
+                <a href="lab.html" class="module-link inline-block transition-transform duration-700 group-hover:translate-x-2">Intervention Lab</a>
+                <p class="text-zinc-500 text-[9px] mt-2 italic">Prototyping the invisible boundaries.</p>
+            </div>
+        </nav>
+    </main>
+
+</body>
+</html>
