@@ -18,7 +18,7 @@
 
         ::-webkit-scrollbar { display: none; }
 
-        /* --- 固定 UI 外壳 (与主页完全一致) --- */
+        /* --- 固定 UI 外壳 --- */
         .fixed-ui {
             position: fixed;
             inset: 0;
@@ -52,93 +52,105 @@
             transition: all 0.4s ease;
             text-transform: uppercase;
             font-weight: 900;
-            font-size: 1.875rem; /* text-3xl */
+            font-size: 1.875rem; 
             line-height: 2.25rem;
+            color: #000;
         }
-        .module-link:hover { color: #888; transform: translateY(-5px); }
         .active-module { border-bottom: 4px solid #000; }
 
-        /* --- 可滚动的内容区域 --- */
-        .scroll-content {
+        /* --- 随动消失的顶部元素 (FLÂNEUR) --- */
+        .scroll-header {
+            width: 100%;
+            height: 30vh; /* 给顶部留出滚动空间 */
             position: relative;
-            z-index: 10;
-            padding: 12vw 3rem 15vh 3rem; /* 为固定的名字和底部留出空间 */
+            padding: 3rem;
+            display: flex;
+            justify-content: flex-end;
         }
 
-        /* 城市导航条 (去掉数字) */
+        .title-flaneur {
+            font-size: 8vw;
+            line-height: 0.8;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-align: right;
+        }
+
+        /* --- 内容区域 --- */
+        .drift-content {
+            padding: 0 3rem 15vh 3rem;
+        }
+
+        /* 城市切换：字号调小，更像副标题 */
         .city-nav {
             display: flex;
-            gap: 3rem;
-            margin-bottom: 4rem;
-            overflow-x: auto;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
         .city-tab {
-            font-size: 2.5rem;
+            font-size: 1rem; /* 显著缩小 */
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: -0.05em;
+            letter-spacing: 0.1em;
             cursor: pointer;
             opacity: 0.2;
-            transition: opacity 0.5s;
+            transition: opacity 0.3s;
         }
-        .city-tab.active { opacity: 1; }
+        .city-tab:hover, .city-tab.active { opacity: 1; }
 
-        /* 照片排版 (参考图1逻辑，缩小主图) */
-        .gallery-grid {
+        /* 随机小图矩阵 (Masonry-like Grid) */
+        .photo-matrix {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
             align-items: start;
         }
 
-        .gallery-info {
-            grid-column: span 5;
+        .photo-item {
+            aspect-ratio: 1/1;
+            background: #f7f7f7;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .gallery-title {
-            font-size: 4vw;
-            line-height: 0.9;
+        
+        /* 不同的宽高比随机感 */
+        .photo-item.portrait { aspect-ratio: 3/4; }
+        .photo-item.landscape { aspect-ratio: 4/3; }
+
+        .photo-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(1);
+            transition: 0.6s;
+        }
+
+        .photo-item:hover img {
+            filter: grayscale(0);
+            transform: scale(1.08);
+        }
+
+        /* 悬停时的城市标记 */
+        .photo-item::after {
+            content: attr(data-city);
+            position: absolute;
+            bottom: 10px; left: 10px;
+            font-size: 8px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 2rem;
+            background: #fff;
+            padding: 2px 5px;
+            opacity: 0;
+            transition: 0.3s;
         }
-        .gallery-desc {
-            font-size: 0.85rem;
-            line-height: 1.8;
-            color: #666;
-            max-width: 260px;
-        }
-
-        /* [ MAIN PORTRAIT ] 适当缩小 */
-        .main-portrait {
-            grid-column: span 5; /* 从之前的 7 缩减到 5，腾出更多留白 */
-            aspect-ratio: 3/4;
-            background: #fbfbfb;
-            overflow: hidden;
-            border: 1px solid #eee;
-        }
-        .main-portrait img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 底部缩略图流 (去掉数字) */
-        .thumb-strip {
-            grid-column: span 12;
-            display: flex;
-            gap: 15px;
-            margin-top: 6rem;
-            overflow-x: auto;
-        }
-        .thumb-item {
-            flex: 0 0 120px;
-            aspect-ratio: 1/1;
-            background: #f0f0f0;
-            cursor: pointer;
-            transition: filter 0.3s;
-        }
-        .thumb-item:hover { filter: brightness(0.8); }
+        .photo-item:hover::after { opacity: 1; }
 
         @media (max-width: 768px) {
-            .gallery-grid > * { grid-column: span 12; }
             .fixed-ui { padding: 1.5rem; }
-            .bottom-nav { display: none; } /* 手机端隐藏底部防止重叠 */
+            .scroll-header { height: 20vh; padding: 1.5rem; }
+            .bottom-nav { display: none; }
         }
     </style>
 </head>
@@ -148,22 +160,17 @@
         <div class="title-kunxi" onclick="location.href='index.html'">KUNXI</div>
         
         <nav class="bottom-nav">
-            <div class="flex flex-col">
-                <a href="index.html#spatial" class="module-link">Spatial Logic</a>
-                <span class="text-[10px] opacity-30 italic mt-1 uppercase tracking-widest">Architecture</span>
-            </div>
-            <div class="flex flex-col">
-                <a href="visual-drift.html" class="module-link active-module">Visual Drift</a>
-                <span class="text-[10px] opacity-30 italic mt-1 uppercase tracking-widest">Photography</span>
-            </div>
-            <div class="flex flex-col">
-                <a href="index.html#lab" class="module-link">Intervention Lab</a>
-                <span class="text-[10px] opacity-30 italic mt-1 uppercase tracking-widest">HCI Experiment</span>
-            </div>
+            <div class="flex flex-col"><a href="index.html#spatial" class="module-link">Spatial Logic</a></div>
+            <div class="flex flex-col"><a href="visual-drift.html" class="module-link active-module">Visual Drift</a></div>
+            <div class="flex flex-col"><a href="index.html#lab" class="module-link">Intervention Lab</a></div>
         </nav>
     </div>
 
-    <main class="scroll-content">
+    <header class="scroll-header">
+        <h2 class="title-flaneur">FL&acirc;NEUR</h2>
+    </header>
+
+    <main class="drift-content">
         
         <nav class="city-nav">
             <span class="city-tab active">Edinburgh</span>
@@ -172,33 +179,34 @@
             <span class="city-tab">Tokyo</span>
         </nav>
 
-        <section class="gallery-grid">
-            <div class="gallery-info">
-                <h1 class="gallery-title">THE GREY<br>ATLANTIC<br>DRIFT.</h1>
-                <p class="gallery-desc">
-                    Observing the city as a living interface. These frames capture the heavy logic of masonry in the northern mist.
-                </p>
+        <div class="photo-matrix">
+            <div class="photo-item portrait" data-city="Edinburgh">
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 01</div>
             </div>
-
-            <div class="main-portrait">
-                <div class="w-full h-full flex items-center justify-center text-zinc-300 italic text-[10px] tracking-widest">
-                    [ VISUAL ENTRY ]
-                </div>
+            <div class="photo-item" data-city="Tokyo">
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 02</div>
             </div>
-
-            <div class="thumb-strip">
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
-                <div class="thumb-item"></div>
+            <div class="photo-item landscape" data-city="Abu Dhabi">
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 03</div>
             </div>
-        </section>
+            <div class="photo-item" data-city="Singapore">
+                <div class="w-full h-col flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 04</div>
+            </div>
+            <div class="photo-item portrait" data-city="Edinburgh"></div>
+            <div class="photo-item" data-city="Tokyo"></div>
+            <div class="photo-item" data-city="Singapore"></div>
+            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
+            <div class="photo-item portrait" data-city="Tokyo"></div>
+            <div class="photo-item" data-city="Edinburgh"></div>
+            <div class="photo-item" data-city="Abu Dhabi"></div>
+            <div class="photo-item" data-city="Singapore"></div>
+        </div>
 
     </main>
+
+    <footer class="p-20 text-center opacity-10 text-[8px] font-black uppercase tracking-[1.5em]">
+        End of Drift / Stay Wandering
+    </footer>
 
 </body>
 </html>
