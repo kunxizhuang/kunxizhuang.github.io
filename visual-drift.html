@@ -1,3 +1,8 @@
+这是为您重构后的完整 visual-drift.html。
+
+它实现了：固定框架（KUNXI + 三大模块）、字号与首页完全对齐、右上角 FLÂNEUR 随动消失、精简的城市导航以及磁吸交互脚本。
+
+HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,11 +19,12 @@
             color: #000;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         ::-webkit-scrollbar { display: none; }
 
-        /* --- 固定 UI 外壳 --- */
+        /* --- 固定 UI 外壳 (与首页保持 1:1 一致) --- */
         .fixed-ui {
             position: fixed;
             inset: 0;
@@ -49,19 +55,25 @@
 
         .module-link {
             display: inline-block;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             text-transform: uppercase;
             font-weight: 900;
-            font-size: 1.875rem; 
-            line-height: 2.25rem;
+            font-size: 1.5rem; /* 对齐首页 text-2xl */
+            line-height: 0.8;
+            letter-spacing: -0.05em;
             color: #000;
+            text-decoration: none;
         }
-        .active-module { border-bottom: 4px solid #000; }
+        
+        .active-module {
+            border-bottom: 2px solid #000;
+            padding-bottom: 4px;
+        }
 
-        /* --- 随动消失的顶部元素 (FLÂNEUR) --- */
+        /* --- 随动消失的顶部元素 --- */
         .scroll-header {
             width: 100%;
-            height: 30vh; /* 给顶部留出滚动空间 */
+            height: 35vh; 
             position: relative;
             padding: 3rem;
             display: flex;
@@ -77,46 +89,46 @@
             text-align: right;
         }
 
-        /* --- 内容区域 --- */
+        /* --- 核心内容区 --- */
         .drift-content {
-            padding: 0 3rem 15vh 3rem;
+            padding: 0 3rem 20vh 3rem;
         }
 
-        /* 城市切换：字号调小，更像副标题 */
+        /* 城市导航：精简字号 */
         .city-nav {
             display: flex;
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
         .city-tab {
-            font-size: 1rem; /* 显著缩小 */
+            font-size: 1rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             cursor: pointer;
-            opacity: 0.2;
+            opacity: 0.15;
             transition: opacity 0.3s;
         }
         .city-tab:hover, .city-tab.active { opacity: 1; }
 
-        /* 随机小图矩阵 (Masonry-like Grid) */
+        /* 随机小图矩阵 (不设大图) */
         .photo-matrix {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
             align-items: start;
         }
 
         .photo-item {
             aspect-ratio: 1/1;
-            background: #f7f7f7;
+            background: #f8f8f8;
             position: relative;
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* 不同的宽高比随机感 */
+        /* 随机比例类 */
         .photo-item.portrait { aspect-ratio: 3/4; }
         .photo-item.landscape { aspect-ratio: 4/3; }
 
@@ -124,24 +136,25 @@
             width: 100%; height: 100%;
             object-fit: cover;
             filter: grayscale(1);
-            transition: 0.6s;
+            transition: 0.8s;
         }
 
         .photo-item:hover img {
             filter: grayscale(0);
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
-        /* 悬停时的城市标记 */
+        /* 悬停标签 */
         .photo-item::after {
             content: attr(data-city);
             position: absolute;
-            bottom: 10px; left: 10px;
-            font-size: 8px;
+            bottom: 12px; left: 12px;
+            font-size: 9px;
             font-weight: 900;
             text-transform: uppercase;
-            background: #fff;
-            padding: 2px 5px;
+            background: #000;
+            color: #fff;
+            padding: 3px 6px;
             opacity: 0;
             transition: 0.3s;
         }
@@ -149,8 +162,9 @@
 
         @media (max-width: 768px) {
             .fixed-ui { padding: 1.5rem; }
-            .scroll-header { height: 20vh; padding: 1.5rem; }
+            .scroll-header { height: 25vh; padding: 1.5rem; }
             .bottom-nav { display: none; }
+            .photo-matrix { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         }
     </style>
 </head>
@@ -160,9 +174,18 @@
         <div class="title-kunxi" onclick="location.href='index.html'">KUNXI</div>
         
         <nav class="bottom-nav">
-            <div class="flex flex-col"><a href="index.html#spatial" class="module-link">Spatial Logic</a></div>
-            <div class="flex flex-col"><a href="visual-drift.html" class="module-link active-module">Visual Drift</a></div>
-            <div class="flex flex-col"><a href="index.html#lab" class="module-link">Intervention Lab</a></div>
+            <div class="flex flex-col">
+                <a href="index.html" class="module-link">Spatial Logic</a>
+                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">Architecture</span>
+            </div>
+            <div class="flex flex-col">
+                <a href="visual-drift.html" class="module-link active-module">Visual Drift</a>
+                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">Photography</span>
+            </div>
+            <div class="flex flex-col">
+                <a href="index.html" class="module-link">Intervention Lab</a>
+                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">HCI Experiment</span>
+            </div>
         </nav>
     </div>
 
@@ -181,32 +204,48 @@
 
         <div class="photo-matrix">
             <div class="photo-item portrait" data-city="Edinburgh">
-                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 01</div>
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame_01</div>
             </div>
             <div class="photo-item" data-city="Tokyo">
-                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 02</div>
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame_02</div>
             </div>
-            <div class="photo-item landscape" data-city="Abu Dhabi">
-                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 03</div>
-            </div>
-            <div class="photo-item" data-city="Singapore">
-                <div class="w-full h-col flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame 04</div>
-            </div>
+            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
+            <div class="photo-item" data-city="Singapore"></div>
             <div class="photo-item portrait" data-city="Edinburgh"></div>
             <div class="photo-item" data-city="Tokyo"></div>
-            <div class="photo-item" data-city="Singapore"></div>
-            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
+            <div class="photo-item landscape" data-city="Singapore"></div>
+            <div class="photo-item" data-city="Abu Dhabi"></div>
             <div class="photo-item portrait" data-city="Tokyo"></div>
             <div class="photo-item" data-city="Edinburgh"></div>
-            <div class="photo-item" data-city="Abu Dhabi"></div>
+            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
             <div class="photo-item" data-city="Singapore"></div>
         </div>
 
     </main>
 
-    <footer class="p-20 text-center opacity-10 text-[8px] font-black uppercase tracking-[1.5em]">
-        End of Drift / Stay Wandering
+    <footer class="p-32 text-center opacity-10 text-[8px] font-black uppercase tracking-[1.5em]">
+        End of Drift / Coordinate Archive
     </footer>
+
+    <script>
+        const magneticElements = document.querySelectorAll('.module-link, .city-tab, .title-kunxi');
+
+        magneticElements.forEach((el) => {
+            el.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                this.style.transform = `translate(${x / 4}px, ${y / 4}px) scale(1.05)`;
+                this.style.transition = 'transform 0.1s linear';
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0px, 0px) scale(1)';
+                this.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+        });
+    </script>
 
 </body>
 </html>
