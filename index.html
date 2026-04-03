@@ -9,125 +9,76 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap');
 
         body { 
-            background-color: #fff; 
-            color: #000; 
-            font-family: 'Inter', sans-serif; 
-            -webkit-font-smoothing: antialiased; 
-            margin: 0; 
-            overflow-x: hidden; 
+            background-color: #fff; color: #000; font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased; margin: 0; overflow-x: hidden; 
         }
         ::-webkit-scrollbar { display: none; }
 
-        /* --- 1. 固定框架层 (小字号、无底色悬浮) --- */
+        /* --- 1. 固定框架层 (无底色、小字号) --- */
         .ui-frame-fixed { 
-            position: fixed; 
-            inset: 0; 
-            pointer-events: none; 
-            z-index: 100; 
-            padding: 2rem; 
+            position: fixed; inset: 0; pointer-events: none; z-index: 100; padding: 2rem; 
         }
-
         .name-box { 
-            position: absolute; 
-            top: 2rem; 
-            left: 2rem; 
-            pointer-events: auto; 
-            /* 彻底移除 background: white */
+            position: absolute; top: 2rem; left: 2rem; pointer-events: auto; 
         }
-
-        /* 字号缩小至 5vw，更显精致 */
         .title-kunxi { 
-            font-size: 5vw; 
-            line-height: 0.8; 
-            letter-spacing: -0.05em; 
-            font-weight: 900; 
-            text-transform: uppercase; 
+            font-size: 5vw; line-height: 0.8; letter-spacing: -0.05em; font-weight: 900; text-transform: uppercase; 
         }
-
         .footer-box { 
-            position: absolute; 
-            bottom: 2rem; 
-            left: 0; 
-            width: 100%; 
-            text-align: center; 
+            position: absolute; bottom: 2rem; left: 0; width: 100%; text-align: center; 
         }
-
         .footer-text { 
-            font-size: 7px; 
-            letter-spacing: 1.5em; 
-            opacity: 0.2; 
-            text-transform: uppercase; 
-            font-weight: 900; 
+            font-size: 7px; letter-spacing: 1.5em; opacity: 0.2; text-transform: uppercase; font-weight: 900; 
         }
 
         /* --- 2. 随动副标题 --- */
         .header-drift { 
-            padding: 2rem; 
-            display: flex; 
-            justify-content: flex-end; 
-            position: relative; 
-            z-index: 10; 
+            padding: 2rem; display: flex; justify-content: flex-end; position: relative; z-index: 10; 
         }
-
         .title-flaneur { 
-            font-size: 5vw; 
-            line-height: 0.8; 
-            letter-spacing: -0.02em; 
-            font-weight: 300; 
-            text-transform: uppercase; 
+            font-size: 5vw; line-height: 0.8; letter-spacing: -0.02em; font-weight: 300; text-transform: uppercase; 
         }
 
         /* --- 3. 内容滑动主区 --- */
-        .main-content { 
-            position: relative; 
-            z-index: 50; 
-            background: transparent; 
-        }
+        .main-content { position: relative; z-index: 50; background: transparent; }
 
-        /* 核心：满屏组件强制溢出逻辑 */
+        /* 强行满屏容器逻辑 */
         .full-bleed {
             width: 100vw;
             position: relative;
             left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+            transform: translateX(-50%);
         }
 
-        /* 视频容器 */
+        /* 视频区 */
         .video-section { height: 85vh; background: #000; overflow: hidden; }
         .video-container { width: 100%; height: 100%; object-fit: cover; grayscale: 100%; }
 
-        /* 地图带容器 */
+        /* 地图带：增加高度并确保铺满 */
         .map-strip {
-            height: 220px;
+            height: 260px; /* 稍微增加了高度让漫游感更强 */
             background: #0a0a0a;
             margin: 8rem 0;
             overflow: hidden;
-            /* 自定义行走小人光标 */
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 4a1 1 0 1 0 2 0 1 1 0 1 0-2 0'/%3E%3Cpath d='M4 20h4l1.5-5.5L11 16v5h2v-7l-2-1 1-3 1.5 1.5L17 10'/%3E%3Cpath d='m14 10 1-1'/%3E%3C/svg%3E") 16 16, auto;
         }
 
-        .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 30px 30px; }
-        
-        /* 坐标脉冲点 */
-        .dot { position: absolute; width: 5px; height: 5px; background: #fff; border-radius: 50%; z-index: 60; cursor: pointer; }
+        .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 35px 35px; }
+        .dot { position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; z-index: 60; cursor: pointer; }
         .dot::after { content: ''; position: absolute; inset: -2px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; animation: pulse 2.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
-        
         .dot-label { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 900; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.2em; white-space: nowrap; opacity: 0; transition: 0.4s; }
         .dot:hover .dot-label { color: #fff; opacity: 1; bottom: 15px; }
 
         /* 非满屏文字容器 */
         .content-container { padding: 0 2rem; max-width: 1400px; margin: 0 auto; }
 
-        /* 响应式调整 */
         @media (max-width: 768px) {
             .ui-frame-fixed, .header-drift { padding: 1.5rem; }
             .name-box { top: 1.5rem; left: 1.5rem; }
             .title-kunxi, .title-flaneur { font-size: 10vw; }
-            .video-section { height: 60vh; }
-            .map-strip { height: 160px; }
+            .video-section { height: 65vh; }
+            .map-strip { height: 180px; }
             .content-container { padding: 0 1.5rem; }
         }
     </style>
@@ -153,16 +104,13 @@
             <video class="video-container" autoplay muted loop playsinline>
                 <source src="your-video.mp4" type="video/mp4">
             </video>
-            <div class="absolute bottom-10 left-10 text-white/20 text-[9px] tracking-widest uppercase font-bold">
-                Digital Drifting / Perspective 01
-            </div>
         </section>
 
         <section class="content-container pt-24 pb-12 flex flex-col md:flex-row justify-end">
             <div class="max-w-[340px] text-right">
                 <p class="text-[0.8rem] leading-relaxed text-zinc-500 font-light">
                     To wander is not to be lost, but to observe the city as a living interface. 
-                    As an architect, I transition from the heavy logic of masonry...
+                    As an architect, I transition from the heavy logic of masonry to the fluid drifting of digital interaction. 
                 </p>
                 <p class="text-[9px] mt-6 tracking-[0.3em] text-black font-black uppercase">
                     Edinburgh — Tokyo — Shanghai
@@ -186,7 +134,7 @@
                 <p class="text-zinc-400 text-[10px] mt-2 italic font-light">“Buildings are static, logic is fluid.”</p>
             </div>
             <div class="group">
-                <a href="drift.html" class="inline-block transition-transform duration-700 group-hover:translate-x-2">
+                <a href="visual-drift.html" class="inline-block transition-transform duration-700 group-hover:translate-x-2">
                     <span class="text-2xl font-black uppercase tracking-tighter">Visual Drift</span>
                 </a>
                 <p class="text-zinc-400 text-[10px] mt-2 italic font-light">“The city is an interface. Walking is the interaction.”</p>
