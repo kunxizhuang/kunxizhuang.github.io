@@ -2,245 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VISUAL DRIFT | KUNXI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap');
 
-        body, html {
-            margin: 0; padding: 0;
-            background-color: #fff;
-            color: #000;
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+        body { 
+            background-color: #fff; color: #000; font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased; margin: 0; overflow-x: hidden; 
         }
-
         ::-webkit-scrollbar { display: none; }
 
-        /* --- 固定 UI 外壳 (与首页保持 1:1 一致) --- */
-        .fixed-ui {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            padding: 3rem;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        /* --- 1. 固定 UI 框架 (与首页 1:1 对位) --- */
+        .ui-frame-fixed { 
+            position: fixed; inset: 0; pointer-events: none; z-index: 100; padding: 2rem; 
         }
-
-        .title-kunxi {
-            font-size: 8vw;
-            line-height: 0.8;
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-            font-weight: 900;
-            pointer-events: auto;
-            cursor: pointer;
+        .name-box { 
+            position: absolute; top: 2rem; left: 2rem; pointer-events: auto; 
         }
-
-        .bottom-nav {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            pointer-events: auto;
-        }
-
-        .module-link {
-            display: inline-block;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            text-transform: uppercase;
-            font-weight: 900;
-            font-size: 1.5rem; /* 对齐首页 text-2xl */
-            line-height: 0.8;
-            letter-spacing: -0.05em;
-            color: #000;
-            text-decoration: none;
+        /* 字号同步为 5vw */
+        .title-kunxi { 
+            font-size: 5vw; line-height: 0.8; letter-spacing: -0.05em; font-weight: 900; text-transform: uppercase; 
         }
         
-        .active-module {
-            border-bottom: 2px solid #000;
-            padding-bottom: 4px;
+        .footer-box { 
+            position: absolute; bottom: 2rem; left: 0; width: 100%; text-align: center; 
+        }
+        .footer-text { 
+            font-size: 7px; letter-spacing: 1.5em; opacity: 0.2; text-transform: uppercase; font-weight: 900; 
         }
 
-        /* --- 随动消失的顶部元素 --- */
-        .scroll-header {
-            width: 100%;
-            height: 35vh; 
-            position: relative;
-            padding: 3rem;
-            display: flex;
-            justify-content: flex-end;
+        /* --- 2. 随动副标题 --- */
+        .header-drift { 
+            padding: 2rem; display: flex; justify-content: flex-end; position: relative; z-index: 10; 
+        }
+        .title-flaneur { 
+            font-size: 5vw; line-height: 0.8; letter-spacing: -0.02em; font-weight: 300; text-transform: uppercase; 
         }
 
-        .title-flaneur {
-            font-size: 8vw;
-            line-height: 0.8;
-            letter-spacing: -0.02em;
-            text-transform: uppercase;
-            font-weight: 300;
-            text-align: right;
-        }
+        /* --- 3. 核心内容区 --- */
+        .main-content { position: relative; z-index: 50; background: transparent; padding: 0 2rem; }
 
-        /* --- 核心内容区 --- */
-        .drift-content {
-            padding: 0 3rem 20vh 3rem;
+        /* 城市导航小字号 */
+        .city-nav { display: flex; gap: 2rem; margin: 4rem 0; }
+        .city-tab { 
+            font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; 
+            cursor: pointer; opacity: 0.2; transition: 0.3s; 
         }
+        .city-tab.active, .city-tab:hover { opacity: 1; }
 
-        /* 城市导航：精简字号 */
-        .city-nav {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-        .city-tab {
-            font-size: 1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            opacity: 0.15;
-            transition: opacity 0.3s;
-        }
-        .city-tab:hover, .city-tab.active { opacity: 1; }
-
-        /* 随机小图矩阵 (不设大图) */
+        /* 摄影矩阵布局 */
         .photo-matrix {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 3rem;
             align-items: start;
+            padding-bottom: 10vh;
         }
-
-        .photo-item {
-            aspect-ratio: 1/1;
-            background: #f8f8f8;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        .photo-item { 
+            background: #f8f8f8; overflow: hidden; position: relative;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        /* 随机比例类 */
+        .photo-item:hover { transform: translateY(-10px); }
         .photo-item.portrait { aspect-ratio: 3/4; }
         .photo-item.landscape { aspect-ratio: 4/3; }
+        .photo-item.square { aspect-ratio: 1/1; }
 
-        .photo-item img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            filter: grayscale(1);
-            transition: 0.8s;
-        }
-
-        .photo-item:hover img {
-            filter: grayscale(0);
-            transform: scale(1.05);
-        }
-
-        /* 悬停标签 */
-        .photo-item::after {
-            content: attr(data-city);
-            position: absolute;
-            bottom: 12px; left: 12px;
-            font-size: 9px;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: #000;
-            color: #fff;
-            padding: 3px 6px;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .photo-item:hover::after { opacity: 1; }
+        /* 底部导航同步首页格式 */
+        .bottom-nav-container { margin: 10rem 0 5rem 0; }
+        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .module-link { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
+        .active-module { border-bottom: 2px solid #000; }
 
         @media (max-width: 768px) {
-            .fixed-ui { padding: 1.5rem; }
-            .scroll-header { height: 25vh; padding: 1.5rem; }
-            .bottom-nav { display: none; }
-            .photo-matrix { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .ui-frame-fixed, .header-drift { padding: 1.5rem; }
+            .name-box { top: 1.5rem; left: 1.5rem; }
+            .title-kunxi, .title-flaneur { font-size: 10vw; }
+            .nav-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .photo-matrix { grid-template-columns: 1fr; gap: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="fixed-ui">
-        <div class="title-kunxi" onclick="location.href='index.html'">KUNXI</div>
-        
-        <nav class="bottom-nav">
-            <div class="flex flex-col">
-                <a href="index.html" class="module-link">Spatial Logic</a>
-                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">Architecture</span>
-            </div>
-            <div class="flex flex-col">
-                <a href="visual-drift.html" class="module-link active-module">Visual Drift</a>
-                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">Photography</span>
-            </div>
-            <div class="flex flex-col">
-                <a href="index.html" class="module-link">Intervention Lab</a>
-                <span class="text-[9px] opacity-30 italic mt-1 uppercase tracking-widest">HCI Experiment</span>
-            </div>
-        </nav>
+    <div class="ui-frame-fixed">
+        <div class="name-box">
+            <a href="index.html"><h1 class="title-kunxi">KUNXI</h1></a>
+        </div>
+        <div class="footer-box">
+            <p class="footer-text">Ways of seeing a city.</p>
+        </div>
     </div>
 
-    <header class="scroll-header">
-        <h2 class="title-flaneur">FL&acirc;NEUR</h2>
+    <header class="header-drift">
+        <h2 class="title-flaneur">DRIFT_ARCHIVE</h2>
     </header>
 
-    <main class="drift-content">
+    <main class="main-content">
         
         <nav class="city-nav">
             <span class="city-tab active">Edinburgh</span>
-            <span class="city-tab">Abu Dhabi</span>
-            <span class="city-tab">Singapore</span>
             <span class="city-tab">Tokyo</span>
+            <span class="city-tab">Shanghai</span>
+            <span class="city-tab">Abu Dhabi</span>
         </nav>
 
         <div class="photo-matrix">
-            <div class="photo-item portrait" data-city="Edinburgh">
-                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame_01</div>
+            <div class="photo-item portrait">
+                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase tracking-widest">Frame_01</div>
             </div>
-            <div class="photo-item" data-city="Tokyo">
-                <div class="w-full h-full flex items-center justify-center text-[8px] text-zinc-300 italic uppercase">Frame_02</div>
-            </div>
-            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
-            <div class="photo-item" data-city="Singapore"></div>
-            <div class="photo-item portrait" data-city="Edinburgh"></div>
-            <div class="photo-item" data-city="Tokyo"></div>
-            <div class="photo-item landscape" data-city="Singapore"></div>
-            <div class="photo-item" data-city="Abu Dhabi"></div>
-            <div class="photo-item portrait" data-city="Tokyo"></div>
-            <div class="photo-item" data-city="Edinburgh"></div>
-            <div class="photo-item landscape" data-city="Abu Dhabi"></div>
-            <div class="photo-item" data-city="Singapore"></div>
+            <div class="photo-item square"></div>
+            <div class="photo-item landscape"></div>
+            <div class="photo-item portrait"></div>
+            <div class="photo-item square"></div>
+            <div class="photo-item portrait"></div>
         </div>
 
+        <nav class="bottom-nav-container nav-grid">
+            <div class="group">
+                <a href="spatial.html" class="module-link inline-block transition-transform duration-500 group-hover:translate-x-2">Spatial Logic</a>
+                <p class="text-zinc-400 text-[9px] mt-2 italic uppercase tracking-widest">Architecture</p>
+            </div>
+            <div class="group">
+                <a href="visual-drift.html" class="module-link active-module inline-block">Visual Drift</a>
+                <p class="text-zinc-400 text-[9px] mt-2 italic uppercase tracking-widest">Photography</p>
+            </div>
+            <div class="group">
+                <a href="lab.html" class="module-link inline-block transition-transform duration-500 group-hover:translate-x-2">Intervention Lab</a>
+                <p class="text-zinc-400 text-[9px] mt-2 italic uppercase tracking-widest">HCI Experiment</p>
+            </div>
+        </nav>
+
+        <div class="h-20"></div>
+
     </main>
-
-    <footer class="p-32 text-center opacity-10 text-[8px] font-black uppercase tracking-[1.5em]">
-        End of Drift / Coordinate Archive
-    </footer>
-
-    <script>
-        const magneticElements = document.querySelectorAll('.module-link, .city-tab, .title-kunxi');
-
-        magneticElements.forEach((el) => {
-            el.addEventListener('mousemove', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-
-                this.style.transform = `translate(${x / 4}px, ${y / 4}px) scale(1.05)`;
-                this.style.transition = 'transform 0.1s linear';
-            });
-
-            el.addEventListener('mouseleave', function() {
-                this.style.transform = 'translate(0px, 0px) scale(1)';
-                this.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-            });
-        });
-    </script>
 
 </body>
 </html>
