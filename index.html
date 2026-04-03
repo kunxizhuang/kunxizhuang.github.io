@@ -9,47 +9,46 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap');
 
         body { 
-            background-color: #000; /* 视频加载前显示黑色背景 */
-            color: #fff; /* 文字全部改为白色，浮在深色视频上 */
+            background-color: #000; 
+            color: #fff; 
             font-family: 'Inter', sans-serif; 
             -webkit-font-smoothing: antialiased; 
-            overflow: hidden; /* 满屏视频，不需要页面滚动 */
+            margin: 0;
+            overflow: hidden; /* 保持 Dior 式的单屏画幅 */
         }
 
-        /* 1. 全屏视频背景容器 */
+        /* 1. 全屏视频背景 */
         .video-background {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            z-index: 10;
+            z-index: 1;
             overflow: hidden;
         }
 
         .video-background video {
             width: 100%; height: 100%;
-            object-cover: cover; /* 核心：确保视频铺满整个屏幕且不拉伸 */
-            filter: grayscale(0.5) contrast(1.2); /* 压低饱和度，匹配 OMA 冷峻感，同时增加文字清晰度 */
+            object-fit: cover;
+            filter: grayscale(0.4) brightness(0.7); /* 压低亮度以突出文字 */
         }
 
-        /* 2. 浮在最上层的文字层 */
+        /* 2. UI 文字层 */
         .ui-layer {
-            position: fixed;
-            top: 0; left: 0;
+            position: relative;
+            z-index: 100;
             width: 100vw; height: 100vh;
-            z-index: 100; /* 必须高于视频层 */
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* 名字和模块分居顶部和底部 */
+            justify-content: space-between;
             padding: 3rem;
-            pointer-events: none; /* 穿透文字层点击视频（如果需要） */
+            box-sizing: border-box;
         }
 
-        /* 顶部名字：左粗右细同行 */
+        /* 顶部名字：左粗右细 */
         .header-frame {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            pointer-events: auto; /* 文字可点击 */
         }
 
         .title-kunxi {
@@ -69,47 +68,57 @@
             text-align: right;
         }
 
-        /* 3. 右上角小字宣言：调整定位到 header 下方 */
-        .manifesto-mini-layer {
+        /* 右上角小字宣言 */
+        .manifesto-container {
             display: flex;
             justify-content: flex-end;
-            margin-top: 1rem;
-            pointer-events: auto;
+            margin-top: 1.5rem;
         }
 
         .manifesto-mini {
             font-size: 0.8rem;
             line-height: 1.8;
             font-weight: 400;
-            max-width: 280px;
-            color: rgba(255,255,255,0.7); /* 半透明白色 */
+            max-width: 300px;
+            color: rgba(255,255,255,0.7);
             text-align: right;
         }
 
-        /* 4. 底部坐标地图与模块 */
-        .bottom-frame {
-            pointer-events: auto;
-        }
-
-        /* 极简深色地图切片：调整到模块下方 */
+        /* 3. 底部坐标带与模块 */
         .map-strip {
             width: 100%;
-            height: 80px; /* 地图切片可以更细一点 */
+            height: 60px;
             position: relative;
             margin-bottom: 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* 坐标点 */
+        .dot {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
         }
 
         .module-link {
+            display: inline-block;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             transform-origin: left center;
+            text-decoration: none;
+            color: white;
         }
-        .module-link:hover { transform: scale(1.1); color: rgba(255,255,255,0.5); }
+        
+        .module-link:hover {
+            transform: scale(1.1);
+            color: rgba(255,255,255,0.5);
+        }
 
         @media (max-width: 768px) {
             .title-kunxi, .title-flaneur { font-size: 14vw; }
             .ui-layer { padding: 1.5rem; }
-            .map-strip { height: 120px; }
+            .manifesto-mini { font-size: 0.7rem; max-width: 200px; }
         }
     </style>
 </head>
@@ -118,7 +127,6 @@
     <div class="video-background">
         <video autoplay loop muted playsinline>
             <source src="https://cdn.coverr.co/videos/coverr-tokyo-street-night-drifting-3011/1080p.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
     </div>
 
@@ -129,45 +137,47 @@
                 <h1 class="title-kunxi">KUNXI</h1>
                 <h2 class="title-flaneur">FL&acirc;NEUR</h2>
             </div>
-            <div class="manifesto-mini-layer">
+            <div class="manifesto-container">
                 <p class="manifesto-mini">
                     To wander is not to be lost, but to observe the city as a living interface. 
-                    As an architect, I transition from heavy masonry to fluid digital interaction. 
-                    I seek the invisible boundaries where physical structures meet human-computer narratives.
+                    From the volcanic stones of Edinburgh to the hyper-realist skyline of Dubai, 
+                    I decode the static logic of architecture into fluid digital narratives.
                     <br><br>
                     <span class="text-white font-black uppercase tracking-widest text-[10px]">
-                        UK / UAE / SG / CN
+                        EDINBURGH / DUBAI / SINGAPORE / TOKYO
                     </span>
                 </p>
             </div>
         </section>
 
-        <section class="bottom-frame">
+        <section>
             <div class="map-strip">
-                <div class="absolute inset-0 bg-white/5"></div> <div class="absolute w-1 h-1 bg-white rounded-full" style="top: 25%; left: 18%;"></div>
-                <div class="absolute w-1 h-1 bg-white rounded-full" style="top: 55%; left: 45%;"></div>
-                <div class="absolute w-1 h-1 bg-white rounded-full" style="top: 45%; left: 82%;"></div>
-                <div class="absolute w-1 h-1 bg-white rounded-full" style="top: 75%; left: 78%;"></div>
+                <div class="dot" style="top: 25%; left: 18%;"></div>
+                <div class="dot" style="top: 55%; left: 45%;"></div>
+                <div class="dot" style="top: 45%; left: 82%;"></div>
+                <div class="dot" style="top: 75%; left: 78%;"></div>
             </div>
 
-            <nav class="grid grid-cols-1 md:grid-cols-3 gap-16 uppercase">
+            <nav class="grid grid-cols-1 md:grid-cols-3 gap-12 uppercase">
                 <div class="flex flex-col items-start">
                     <a href="#spatial" class="module-link">
                         <span class="text-3xl font-black tracking-tight">Spatial Logic</span>
                     </a>
-                    <p class="text-white/50 text-[0.7rem] mt-3 italic">“Buildings are static.”</p>
+                    <p class="text-white/40 text-[0.6rem] mt-2 italic">Buildings are static nodes.</p>
                 </div>
+
                 <div class="flex flex-col items-start">
-                    <a href="#visual" class="module-link">
+                    <a href="visual-drift.html" class="module-link">
                         <span class="text-3xl font-black tracking-tight">Visual Drift</span>
                     </a>
-                    <p class="text-white/50 text-[0.7rem] mt-3 italic">“Walking is interaction.”</p>
+                    <p class="text-white/40 text-[0.6rem] mt-2 italic">Walking is the interaction.</p>
                 </div>
+
                 <div class="flex flex-col items-start">
                     <a href="#lab" class="module-link">
                         <span class="text-3xl font-black tracking-tight">Intervention Lab</span>
                     </a>
-                    <p class="text-white/50 text-[0.7rem] mt-3 italic">“Invisible boundaries.”</p>
+                    <p class="text-white/40 text-[0.6rem] mt-2 italic">Prototyping boundaries.</p>
                 </div>
             </nav>
         </section>
